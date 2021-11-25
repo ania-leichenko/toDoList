@@ -1,48 +1,39 @@
-import { useState } from 'react';
-import ToDo from './components/Todo';
-import ToDoForm from './components/TodoForm';
+import { useSelector, useDispatch } from "react-redux";
+import ToDo from "./components/Todo";
+import ToDoForm from "./components/TodoForm";
+import { addTask, removeTask, readyTask } from "./redux/todoSlice";
 
 function App() {
-  const [todos, setTodos] = useState([])
+  const dispatch = useDispatch();
+  const todos = useSelector((state) => state.todo.todos);
 
-  const addTask = (userInput) => {
-    if(userInput) {
-      const newItem = {
-        id: Math.random().toString(36).substr(2,9),
-        task: userInput,
-        complete: false
-      }
-      setTodos([...todos, newItem])
-    }
-  }
+  const addTaskHandler = (userInput) => {
+    dispatch(addTask(userInput));
+  };
 
-  const removeTask = (id) => {
-    setTodos([...todos.filter((todo) => todo.id !== id)])
-  }
+  const removeTaskHandler = (id) => {
+    dispatch(removeTask(id));
+  };
 
-  const readyTask = (id) => {
-    setTodos([
-      ...todos.map((todo) => 
-        todo.id === id ? { ...todo, complete: !todo.complete } : {...todo }
-      )
-    ])
-  }
+  const readyTaskHandler = (id) => {
+    dispatch(readyTask(id));
+  };
 
   return (
     <div className="App">
       <header>
         <h1>To do: </h1>
       </header>
-      <ToDoForm addTask={addTask} />
+      <ToDoForm addTask={addTaskHandler} />
       {todos.map((todo) => {
         return (
           <ToDo
             todo={todo}
             key={todo.id}
-            removeTask={removeTask}
-            readyTask={readyTask}
-            />
-        )
+            removeTask={removeTaskHandler}
+            readyTask={readyTaskHandler}
+          />
+        );
       })}
     </div>
   );
