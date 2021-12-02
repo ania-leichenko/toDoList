@@ -46,9 +46,11 @@
     color: #fff;
     text-transform: capitalize;
   }
+
   .App .item-delete {
     float: right;
   }
+
   .App .item-ready {
     float: right;
     margin-right: 10px;

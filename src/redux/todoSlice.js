@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+let todos = localStorage.getItem("state.todos");
+todos = JSON.parse(todos)
+
 export const todoSlice = createSlice({
   name: "todo",
   initialState: {
-    todos: [],
+    todos: todos,
     userInput: "",
   },
   reducers: {
@@ -15,18 +18,29 @@ export const todoSlice = createSlice({
           complete: false,
         };
         state.todos = [...state.todos, newItem];
+        localStorage.setItem("state.todos", JSON.stringify(state.todos));
       }
     },
     removeTask: (state, action) => {
-        console.log(action)
-        if(action.payload) {
-            state.todos = [...state.todos.filter((todo) => todo.id !== action.payload)];
-        }
+      console.log(action);
+      if (action.payload) {
+        state.todos = [
+          ...state.todos.filter((todo) => todo.id !== action.payload),
+        ];
+      }
+      localStorage.setItem("state.todos", JSON.stringify(state.todos));
     },
     readyTask: (state, action) => {
-        if(action.payload) {
-            state.todos =[...state.todos.map((todo) => todo.id === action.payload ? { ...todo, complete: !todo.complete } : { ...todo }),];  
-        }
+      if (action.payload) {
+        state.todos = [
+          ...state.todos.map((todo) =>
+            todo.id === action.payload
+              ? { ...todo, complete: !todo.complete }
+              : { ...todo }
+          ),
+        ];
+      }
+      localStorage.setItem("state.todos", JSON.stringify(state.todos));
     },
   },
 });
