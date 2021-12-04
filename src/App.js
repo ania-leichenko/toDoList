@@ -25,16 +25,16 @@ function App() {
         <h1>To do: </h1>
       </header>
       <ToDoForm addTask={addTaskHandler} />
-      {todos.map((todo) => {
-        return (
+      <div className="todo-list">
+        {todos.map((todo) => (
           <ToDo
             todo={todo}
             key={todo.id}
             removeTask={removeTaskHandler}
             readyTask={readyTaskHandler}
           />
-        );
-      })}
+        ))}
+      </div>
     </div>
   );
 }
