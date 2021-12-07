@@ -1,13 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 let todos = localStorage.getItem("state.todos");
-todos = JSON.parse(todos)
+
+todos = JSON.parse(todos);
+if(!todos) {
+  todos = []
+}
+
 
 export const todoSlice = createSlice({
   name: "todo",
   initialState: {
-    todos: todos,
-    userInput: "",
+    todos,
   },
   reducers: {
     addTask: (state, action) => {
