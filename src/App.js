@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import ToDo from "./components/Todo";
 import ToDoForm from "./components/TodoForm";
-import { addTask, removeTask, readyTask } from "./redux/todoSlice";
+import { addTask, removeTask, readyTask, setTodos } from "./redux/todoSlice";
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 function App() {
   const dispatch = useDispatch();
@@ -19,22 +20,38 @@ function App() {
     dispatch(readyTask(id));
   };
 
+  function handleOnDragEnd(result) {
+    const items = Array.from(todos);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    dispatch(setTodos(items));
+    if (!result.destination) return;    
+  }
+
   return (
     <div className="App">
       <header>
         <h1>To do: </h1>
       </header>
       <ToDoForm addTask={addTaskHandler} />
-      <div className="todo-list">
-        {todos.map((todo) => (
-          <ToDo
-            todo={todo}
-            key={todo.id}
-            removeTask={removeTaskHandler}
-            readyTask={readyTaskHandler}
-          />
-        ))}
-      </div>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <Droppable droppableId="characters">
+          {(provided) => (
+          <div className="todo-list" {...provided.droppableProps} ref={provided.innerRef}>
+            {todos.map((todo, index) => (
+                <ToDo
+                  todo={todo}
+                  key={todo.id}
+                  index={index}
+                  removeTask={removeTaskHandler}
+                  readyTask={readyTaskHandler}
+                />
+              ))}
+              {provided.placeholder}
+          </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 }

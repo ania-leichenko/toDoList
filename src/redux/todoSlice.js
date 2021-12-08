@@ -46,9 +46,12 @@ export const todoSlice = createSlice({
       }
       localStorage.setItem("state.todos", JSON.stringify(state.todos));
     },
+    setTodos: (state, action) => {
+      state.todos = action.payload
+    },
   },
 });
 
-export const { addTask, removeTask, readyTask } = todoSlice.actions;
+export const { addTask, removeTask, readyTask, setTodos } = todoSlice.actions;
 
 export default todoSlice.reducer;
