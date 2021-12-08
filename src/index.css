@@ -1,6 +1,3 @@
-.body {
-  width: 500px;
-}
 
 .App {
   text-align: center;
@@ -8,12 +5,18 @@
 
 .App .item-todo {
   display: flex;
-  margin: 0 auto;
   margin-top: 15px;
   align-items: center;
   justify-content: center;
   width: 300px;
   background: black;
+}
+
+.App .todo-list{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .App .item-todo .item-text {

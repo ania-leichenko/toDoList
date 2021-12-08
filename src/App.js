@@ -21,11 +21,13 @@ function App() {
   };
 
   function handleOnDragEnd(result) {
+    if (!result.destination) return;
+
     const items = Array.from(todos);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
+
     dispatch(setTodos(items));
-    if (!result.destination) return;    
   }
 
   return (
